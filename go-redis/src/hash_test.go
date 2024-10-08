@@ -8,7 +8,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-//! hset bike:1 model Deimos brand Ergonom type 'Enduro bikes' price 4972
+// ! hset bike:1 model Deimos brand Ergonom type 'Enduro bikes' price 4972
 func Test_set_get_all(t *testing.T) {
 	ctx := context.Background()
 	rdb := redis.NewClient(&redis.Options{
@@ -35,7 +35,7 @@ func Test_set_get_all(t *testing.T) {
 	res4, _ := cmdReturn.Result()
 	fmt.Println(res4)
 	// >>> map[brand:Ergonom model:Deimos price:4972 type:Enduro bikes]
-	
+
 	// 映射到结构体对象
 	type BikeInfo struct {
 		Model string `redis:"model"`
@@ -101,4 +101,15 @@ func Test_hincrby(t *testing.T) {
 	fmt.Println(res6) // >>> 5072
 	res7, _ := rdb.HIncrBy(ctx, "bike:1", "price", -100).Result()
 	fmt.Println(res7) // >>> 4972
+}
+
+func TestXxx(t *testing.T) {
+	var m = map[string]map[string]struct{}{
+		"event_tracking": /* map[string]struct{} */ {
+			"event1": struct{}{},
+			"event2": struct{}{},
+			// ...
+		},
+	}
+	fmt.Println(m)
 }

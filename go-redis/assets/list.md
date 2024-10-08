@@ -1,25 +1,26 @@
 # list 链表
 
-将 list 链表用作栈 stack 和队列 queue
-
-- 左表头 -- 右表尾 
-- 左栈顶 -- 右栈底
+- 键 === 字符串链表
+- 链表是按插入顺序排序的字符串链表，命令以 l 开头
+- 将 list 链表用作栈 stack 和队列 queue
+  - 左表头 -- 右表尾
+  - 左栈顶 -- 右栈底
 
 ### 基本命令
 
-- `lpush` 在表头处添加一个新元素
-- `rpush` 在表尾处添加一个新元素
-- `lpop` 移除表头元素
-- `rpop` 移除表尾元素
-- `llen` 获取表长
-- `lmove` 原子的、将元素从源链表移动到目的链表
-- `lrange` 获取链表中指定范围的元素
-- `ltrim` 将链表裁剪为指定范围
-
-### 阻塞命令
-
-- `blpop` 移除表头元素，如果链表为空，则命令将阻塞，直到有新元素或超时
-- `blmove` 原子的、将元素从源链表移动到目的链表，如果链表为空，则命令将阻塞，直到有新元素
+| 命令     | 说明                                                                           |
+| -------- | ------------------------------------------------------------------------------ |
+| lpush    | 在表头处添加一个新元素                                                         |
+| rpush    | 在表尾处添加一个新元素                                                         |
+| lpop     | 移除表头元素                                                                   |
+| rpop     | 移除表尾元素                                                                   |
+| llen     | 获取表长                                                                       |
+| lmove    | 原子的、将元素从源链表移动到目的链表                                           |
+| lrange   | 获取链表中指定范围的元素                                                       |
+| ltrim    | 将链表裁剪为指定范围                                                           |
+| 阻塞命令 |                                                                                |
+| blpop    | 移除表头元素，如果链表为空，则命令将阻塞，直到有新元素或超时                   |
+| blmove   | 原子的、将元素从源链表移动到目的链表，如果链表为空，则命令将阻塞，直到有新元素 |
 
 ### 例
 
@@ -118,7 +119,7 @@ type new_bikes # string
 lpush new_bikes bike:2 bike:3
 ```
 
-从集合删除元素时，如果删除元素后得到空集合，则自动删除该集合（的键）
+从集合移除元素时，如果移除元素后得到空集合，则自动移除该集合（的键）
 
 ```shell
 rpush bikes:repairs bike:1 bike:2 bike:3 # 3
@@ -126,5 +127,5 @@ exists bikes:repairs # 1
 lpop bikes:repairs
 lpop bikes:repairs
 lpop bikes:repairs
-exists bikes:repairs # 0 自动删除 bikes:repairs
+exists bikes:repairs # 0 自动移除 bikes:repairs
 ```
