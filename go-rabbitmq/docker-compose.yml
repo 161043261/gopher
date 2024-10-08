@@ -1,0 +1,17 @@
+networks:
+  rabbit:
+    driver: bridge
+
+services:
+  mq1:
+    image: rabbitmq:3-management
+    container_name: mq1
+    networks:
+      - rabbit # go-rabbitmq_rabbit
+    hostname: mq1
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=0228
