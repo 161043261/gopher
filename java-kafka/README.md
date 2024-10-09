@@ -1,7 +1,5 @@
 # Kafka
 
-> 荣花与炎日之途
-
 预备
 
 ```shell
@@ -27,8 +25,8 @@ Keywords
 ```text
 Topic 主题（目录）
 └── Partition 分区（子目录）
-    ├── Event1 事件1（文件）
-    └── Event2 事件2
+    ├── Event1 事件1（文件）
+    └── Event2 事件2
 ```
 
 | Keywords       |          |
