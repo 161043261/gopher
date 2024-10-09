@@ -1,13 +1,10 @@
-.PHONY: docker-compose get
+.PHONY: up down get
 
-docker-compose: docker-rm
-	docker-compose up -d
-	docker ps -a
+up: down
+	docker-compose up -d # daemon
 
-docker-rm:
-	docker rm -f zoo1 kafka1
-	rm -rf ./volume/zoo1 ./volume/kafka1
-	mkdir  ./volume/zoo1 ./volume/kafka1
+down:
+	docker-compose down -v # volume
 
 get:
-	go get -u github.com/segmentio/kafka-go
+	go get -u github.com/IBM/sarama

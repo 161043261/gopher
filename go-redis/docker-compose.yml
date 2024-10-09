@@ -1,39 +1,10 @@
 # docker-compose up -d # daemon
 services:
-  # docker-compose up -d redis
-  redis:
+  # docker-compose up -d redis_container
+  redis_container:
     image: redis:latest
-    container_name: redis
-    hostname: redis
+    container_name: redis_container
+    hostname: redis_container
     ports:
       - '6379:6379'
-
-  # docker-compose up -d mysql
-  mysql:
-    image: mysql:latest
-    container_name: mysql
-    hostname: mysql
-    privileged: true
-    ports:
-      - '3306:3306'
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: '0228' # 必须加引号
-      TZ: Asia/Shanghai
-    # volumes:
-    #   - ./my.cnf:/etc/my.cnf
-
-    # docker-compose up -d postgresql
-  postgresql:
-    image: bitnami/postgresql:latest
-    container_name: postgresql
-    hostname: postgresql
-    privileged: true
-    ports:
-      - '5432:5432'
-    environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=0228
-      - POSTGRES_DB=db0
-
-# docker-compose down -v # volume
+    # restart: always
