@@ -50,17 +50,4 @@ TTL, Time To Live 存活时间
 | hpttl      | 获取剩余的存活时间，单位 ms |
 | hpersist   | 移除存活时间                |
 
-字段过期的例子
-
-哈希表：k1 v1 k2 v2 ...
-1. 事件跟踪：使用哈希表的键 key 存储一小时的事件，每个事件的 TTL 设置为一小时，使用 hlen 统计过去一小时的事件数量
-
-```go
-var m = map[string]map[string]struct{}{
-	"event_tracking": /* map[string]struct{} */ {
-		"event1": struct{}{},
-		"event2": struct{}{},
-		// ...
-	},
-}
-```
+官方客户端暂不支持哈希字段过期

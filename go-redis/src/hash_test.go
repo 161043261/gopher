@@ -103,13 +103,26 @@ func Test_hincrby(t *testing.T) {
 	fmt.Println(res7) // >>> 4972
 }
 
-func TestXxx(t *testing.T) {
-	var m = map[string]map[string]struct{}{
-		"event_tracking": /* map[string]struct{} */ {
-			"event1": struct{}{},
-			"event2": struct{}{},
-			// ...
-		},
-	}
-	fmt.Println(m)
+func Test_incrby_get_mget(t *testing.T) {
+	ctx := context.Background()
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password docs
+		DB:       0,  // use default DB
+	})
+	rdb.Del(ctx, "bike:1:stats")
+	res8, _ := rdb.HIncrBy(ctx, "bike:1:stats", "rides", 1).Result()
+	fmt.Println(res8) // >>> 1
+	res9, _ := rdb.HIncrBy(ctx, "bike:1:stats", "rides", 1).Result()
+	fmt.Println(res9) // >>> 2
+	res10, _ := rdb.HIncrBy(ctx, "bike:1:stats", "rides", 1).Result()
+	fmt.Println(res10) // >>> 3
+	res11, _ := rdb.HIncrBy(ctx, "bike:1:stats", "crashes", 1).Result()
+	fmt.Println(res11) // >>> 1
+	res12, _ := rdb.HIncrBy(ctx, "bike:1:stats", "owners", 1).Result()
+	fmt.Println(res12) // >>> 1
+	res13, _ := rdb.HGet(ctx, "bike:1:stats", "rides").Result()
+	fmt.Println(res13) // >>> 3
+	res14, _ := rdb.HMGet(ctx, "bike:1:stats", "crashes", "owners").Result()
+	fmt.Println(res14) // >>> [1 1]
 }

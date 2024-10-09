@@ -26,11 +26,12 @@ redis 数据类型
 
 ### [sorted set](./assets/zset.md) 有序集合
 
-> sorted set 有序集合是唯一字符串的有序集合
+- zset 有序集合是唯一字符串的有序集合，命令以 s 开头
+- 字符串按分数 score 排序，分数相同时按字典排序
+- zset 有序集合可以看作 set 无序集合和 hash 哈希的混合体。有序集合的每个元素 (键) 都关联一个浮点类型的分数 (值)
+- zset 有序集合通过跳表和哈希表（字典）实现，添加元素时排序，添加元素的时间复杂度是 O(log2N)
 
-### [stream](./assets/stream.md) 流
-
-> 流是什么？
+### stream
 
 ### bitmap
 
