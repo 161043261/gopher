@@ -61,3 +61,9 @@ kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost
 # 消费者：读出这些事件
 kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
 ```
+
+查看连接的客户端
+
+```shell
+kafka-consumer-groups.sh --bootstrap-server localhost:9092
+```

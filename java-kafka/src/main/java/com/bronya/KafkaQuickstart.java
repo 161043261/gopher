@@ -60,7 +60,7 @@ public class KafkaQuickstart {
         // 指定 Kafka 反序列化（字节流 -> 对象）方法
         conf.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         conf.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        conf.put(ConsumerConfig.GROUP_ID_CONFIG, "bronya");
+        conf.put(ConsumerConfig.GROUP_ID_CONFIG, "java");
         try ( // 使用 try-with-resources
               // 创建消费者对象
               var consumer = new KafkaConsumer<String, String>(conf)) {
@@ -79,7 +79,7 @@ public class KafkaQuickstart {
       });
 
       try {
-        future.get(5, TimeUnit.SECONDS);
+        future.get(60, TimeUnit.SECONDS);
       } catch (ExecutionException | InterruptedException | TimeoutException e) {
         executorService.shutdown();
         System.out.println("Timeout!");

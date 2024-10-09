@@ -2,14 +2,14 @@
 
 ## [基础](https://161043261.github.io/)
 
+- Linux
 - MySQL
 - Redis
 - Kafka
 - 网络协议 TCP, UDP, HTTP, ...
 - 网络安全 SSH, TLS, ...
 - 分布式算法
-- Linux
-- Docker
+- [Docker](./docker/)
 - gRPC
 - protobuf
 - Git
@@ -27,6 +27,8 @@
 - java 命令 java, javac, mvn, ...
 - mybatis, springboot
   - [java-proj](./java-proj/)
+- kafka
+  - [java-kafka](./java-kafka/)
 - netty
 
 ## go
@@ -36,7 +38,7 @@
 - go 并发编程
   - [go-concurrent](./go-concurrent/)
 - go 网络编程
-  - [go-proxy](./go-proxy/)
+  - [go-server](./go-server/)
 - go IO
 - go 命令 go mod, go build, go run, go test, ...
 - gmp
@@ -48,13 +50,13 @@
 
 ## cpp
 
-- cpp 基础（略）
-- cpp STL（略）
+- cpp 基础
+- cpp STL
 - cpp 并发编程
   - [cpp-concurrent](./cpp-concurrent/)
 - cpp 网络编程
   - [cpp-socket](./cpp-socket/)
-- cpp IO（放弃）
+- cpp IO
 - cpp 命令 gcc, clang, gdb, ...
 - cmake（略）
 
@@ -64,5 +66,5 @@
 - typescript
 - vue3
   - [ts-vue](./ts-vue/)
-  - [ts-vue-plus](./ts-vue-plus/)
+  - [ts-vue3](./ts-vue3/)
   - [ts-proj](./ts-proj/)

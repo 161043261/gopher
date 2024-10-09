@@ -34,6 +34,7 @@ func produce(topic string, loop int) {
 			Value: sarama.StringEncoder(str), // 类型转换
 		}
 		// 生产者发送记录到 Kafka 服务器
+		// offset 偏移量（消费进度）
 		partition, offset, err := producer.SendMessage(record)
 		if err != nil {
 			panic(err)
@@ -46,6 +47,7 @@ func produce(topic string, loop int) {
 func consume(topic string) {
 	// 创建消费者配置对象
 	config := sarama.NewConfig()
+	config.ClientID = "golang" // 消费者 groupId
 	// 指定 Kafka 服务器套接字
 	consumer, err := sarama.NewConsumer([]string{"127.0.0.1:9092"}, config)
 	if err != nil {
@@ -56,7 +58,7 @@ func consume(topic string) {
 	partitionConsumer, err := consumer.ConsumePartition(
 		topic,               // topic 主题
 		0,                   // partition 分区
-		sarama.OffsetNewest, // offset
+		sarama.OffsetNewest, // offset 偏移量（消费进度）
 	)
 	if err != nil {
 		panic(err)
