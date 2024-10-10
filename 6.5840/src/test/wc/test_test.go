@@ -10,9 +10,11 @@ import (
 
 func Map(filename string, contents string) []mr.KeyValue {
 	// function to detect word separators.
+	// 判断 r 是否为 非字母 字符
 	ff := func(r rune) bool { return !unicode.IsLetter(r) }
 
 	// split contents into an array of words.
+	// 调用分割函数 ff 将字符串 contents 分割为子串的切片
 	words := strings.FieldsFunc(contents, ff)
 
 	kva := []mr.KeyValue{}
@@ -20,7 +22,7 @@ func Map(filename string, contents string) []mr.KeyValue {
 		kv := mr.KeyValue{w, "1"}
 		kva = append(kva, kv)
 	}
-	return kva
+	return kva // 键值对的切片，值都是 "1"
 }
 
 func TestMap(t *testing.T) {
