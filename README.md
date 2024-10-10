@@ -59,6 +59,9 @@
 - cpp IO
 - cpp 命令 gcc, clang, gdb, ...
 - cmake（略）
+- mit6.s081
+- cmu 15445
+- mit 6.824
 
 ## 前端
 
