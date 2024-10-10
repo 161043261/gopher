@@ -8,3 +8,7 @@ func Test_ihash(t *testing.T) {
 	// math.MaxInt32 = 0x7fff_ffff
 	ihash("bronya.com") // true
 }
+
+func Test_coordinatorSock(t *testing.T) {
+	coordinatorSock()
+}

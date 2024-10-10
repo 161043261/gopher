@@ -21,9 +21,9 @@ type KeyValue struct {
 func ihash(key string) int {
 	h := fnv.New32a()
 	h.Write([]byte(key))
-	log.Println("math.MaxInt == 0x7fff_ffff\t", math.MaxInt == 0x7fff_ffff)     // false
-	log.Println("math.MaxInt32 == 0x7fff_ffff\t", math.MaxInt32 == 0x7fff_ffff) // true
-	log.Println("1 << 31 - 1 == 0x7fff_ffff\t", 1<<31-1 == 0x7fff_ffff)         // true
+	log.Println("math.MaxInt == 0x7fff_ffff: ", math.MaxInt == 0x7fff_ffff)     // false
+	log.Println("math.MaxInt32 == 0x7fff_ffff: ", math.MaxInt32 == 0x7fff_ffff) // true
+	log.Println("1 << 31 - 1 == 0x7fff_ffff: ", 1<<31-1 == 0x7fff_ffff)         // true
 	return int(h.Sum32() & 0x7fffffff)
 }
 
@@ -34,12 +34,12 @@ func Worker(mapf func(string, string) []KeyValue,
 	// Your worker implementation here.
 
 	// uncomment to send the Example RPC to the coordinator.
-	// CallExample()
+	CallExample()
 
 }
 
 // example function to show how to make an RPC call to the coordinator.
-//
+// 示例函数展示如何向协调器请求 RPC 调用
 // the RPC argument and reply types are defined in rpc.go.
 func CallExample() {
 
@@ -71,13 +71,20 @@ func CallExample() {
 func call(rpcname string, args interface{}, reply interface{}) bool {
 	// c, err := rpc.DialHTTP("tcp", "127.0.0.1"+":1234")
 	sockname := coordinatorSock()
-	c, err := rpc.DialHTTP("unix", sockname)
+	log.Printf("sockname: %s", sockname) // /var/tmp/5840-mr-1000
+
+	// rpc.DialHTTP("unix", "/var/tmp/5840-mr-1000")
+	rpcClient, err := rpc.DialHTTP("unix", sockname)
 	if err != nil {
 		log.Fatal("dialing:", err)
 	}
-	defer c.Close()
+	defer rpcClient.Close()
 
-	err = c.Call(rpcname, args, reply)
+	// rpcname: "Coordinator.Example"
+	// args: ExampleArgs{X: 99}
+	// reply: ExampleReply{}
+
+	err = rpcClient.Call(rpcname, args, reply)
 	if err == nil {
 		return true
 	}

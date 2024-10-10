@@ -6,8 +6,11 @@ package mr
 // remember to capitalize all names.
 //
 
-import "os"
-import "strconv"
+import (
+	"log"
+	"os"
+	"strconv"
+)
 
 //
 // example to show how to declare the arguments
@@ -31,5 +34,6 @@ type ExampleReply struct {
 func coordinatorSock() string {
 	s := "/var/tmp/5840-mr-"
 	s += strconv.Itoa(os.Getuid())
+	log.Println("sockname:", s) // /var/tmp/5840-mr-1000
 	return s
 }
