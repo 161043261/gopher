@@ -2,17 +2,25 @@ package mr
 
 import (
 	"fmt"
+	"hash/fnv"
+	"log"
 	"math"
+	"net/rpc"
 )
-import "log"
-import "net/rpc"
-import "hash/fnv"
 
-// Map functions return a slice of KeyValue.
+// KeyValue Map functions return a slice of KeyValue.
 type KeyValue struct {
 	Key   string
 	Value string
 }
+
+// ByKey for sorting by key.
+type ByKey []KeyValue
+
+// Len for sorting by key.
+func (a ByKey) Len() int           { return len(a) }
+func (a ByKey) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByKey) Less(i, j int) bool { return a[i].Key < a[j].Key }
 
 // use ihash(key) % NReduce to choose the reduce
 // task number for each KeyValue emitted by Map.
@@ -27,7 +35,7 @@ func ihash(key string) int {
 	return int(h.Sum32() & 0x7fffffff)
 }
 
-// main/mrworker.go calls this function.
+// Worker main/mrworker.go calls this function.
 func Worker(mapf func(string, string) []KeyValue,
 	reducef func(string, []string) string) {
 
@@ -35,11 +43,10 @@ func Worker(mapf func(string, string) []KeyValue,
 
 	// uncomment to send the Example RPC to the coordinator.
 	CallExample()
-
 }
 
-// example function to show how to make an RPC call to the coordinator.
-// 示例函数展示如何向协调器请求 RPC 调用
+// CallExample example function to show how to make an RPC call to the coordinator.
+// 向协调器发送 RPC 请求
 // the RPC argument and reply types are defined in rpc.go.
 func CallExample() {
 

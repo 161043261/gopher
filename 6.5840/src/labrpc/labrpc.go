@@ -78,7 +78,7 @@ type ClientEnd struct {
 	done    chan struct{} // closed when Network is cleaned up
 }
 
-// send an RPC, wait for the reply.
+// Call send an RPC, wait for the reply.
 // the return value indicates success; false means that
 // no reply was received from the server.
 func (e *ClientEnd) Call(svcMeth string, args interface{}, reply interface{}) bool {
@@ -143,7 +143,7 @@ func MakeNetwork() *Network {
 	rn.ends = map[interface{}]*ClientEnd{}
 	rn.enabled = map[interface{}]bool{}
 	rn.servers = map[interface{}]*Server{}
-	rn.connections = map[interface{}](interface{}){}
+	rn.connections = map[interface{}]interface{}{}
 	rn.endCh = make(chan reqMsg)
 	rn.done = make(chan struct{})
 
@@ -221,7 +221,7 @@ func (rn *Network) processReq(req reqMsg) {
 	if enabled && servername != nil && server != nil {
 		if reliable == false {
 			// short delay
-			ms := (rand.Int() % 27)
+			ms := rand.Int() % 27
 			time.Sleep(time.Duration(ms) * time.Millisecond)
 		}
 
@@ -295,11 +295,11 @@ func (rn *Network) processReq(req reqMsg) {
 		if rn.longDelays {
 			// let Raft tests check that leader doesn't send
 			// RPCs synchronously.
-			ms = (rand.Int() % 7000)
+			ms = rand.Int() % 7000
 		} else {
 			// many kv tests require the client to try each
 			// server in fairly rapid succession.
-			ms = (rand.Int() % 100)
+			ms = rand.Int() % 100
 		}
 		time.AfterFunc(time.Duration(ms)*time.Millisecond, func() {
 			req.replyCh <- replyMsg{false, nil}
@@ -308,7 +308,7 @@ func (rn *Network) processReq(req reqMsg) {
 
 }
 
-// create a client end-point.
+// MakeEnd create a client end-point.
 // start the thread that listens and delivers.
 func (rn *Network) MakeEnd(endname interface{}) *ClientEnd {
 	rn.mu.Lock()
@@ -343,7 +343,7 @@ func (rn *Network) DeleteServer(servername interface{}) {
 	rn.servers[servername] = nil
 }
 
-// connect a ClientEnd to a server.
+// Connect connect a ClientEnd to a server.
 // a ClientEnd can only be connected once in its lifetime.
 func (rn *Network) Connect(endname interface{}, servername interface{}) {
 	rn.mu.Lock()
@@ -352,7 +352,7 @@ func (rn *Network) Connect(endname interface{}, servername interface{}) {
 	rn.connections[endname] = servername
 }
 
-// enable/disable a ClientEnd.
+// Enable enable/disable a ClientEnd.
 func (rn *Network) Enable(endname interface{}, enabled bool) {
 	rn.mu.Lock()
 	defer rn.mu.Unlock()
@@ -360,7 +360,7 @@ func (rn *Network) Enable(endname interface{}, enabled bool) {
 	rn.enabled[endname] = enabled
 }
 
-// get a server's count of incoming RPCs.
+// GetCount get a server's count of incoming RPCs.
 func (rn *Network) GetCount(servername interface{}) int {
 	rn.mu.Lock()
 	defer rn.mu.Unlock()
@@ -379,7 +379,7 @@ func (rn *Network) GetTotalBytes() int64 {
 	return x
 }
 
-// a server is a collection of services, all sharing
+// Server a server is a collection of services, all sharing
 // the same rpc dispatcher. so that e.g. both a Raft
 // and a k/v server can listen to the same rpc endpoint.
 type Server struct {
@@ -418,7 +418,7 @@ func (rs *Server) dispatch(req reqMsg) replyMsg {
 		return service.dispatch(methodName, req)
 	} else {
 		choices := []string{}
-		for k, _ := range rs.services {
+		for k := range rs.services {
 			choices = append(choices, k)
 		}
 		log.Fatalf("labrpc.Server.dispatch(): unknown service %v in %v.%v; expecting one of %v\n",
@@ -433,7 +433,7 @@ func (rs *Server) GetCount() int {
 	return rs.count
 }
 
-// an object with methods that can be called via RPC.
+// Service an object with methods that can be called via RPC.
 // a single server may have more than one Service.
 type Service struct {
 	name    string
@@ -501,7 +501,7 @@ func (svc *Service) dispatch(methname string, req reqMsg) replyMsg {
 		return replyMsg{true, rb.Bytes()}
 	} else {
 		choices := []string{}
-		for k, _ := range svc.methods {
+		for k := range svc.methods {
 			choices = append(choices, k)
 		}
 		log.Fatalf("labrpc.Service.dispatch(): unknown method %v in %v; expecting one of %v\n",

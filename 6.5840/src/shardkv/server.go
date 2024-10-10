@@ -32,7 +32,7 @@ func (kv *ShardKV) PutAppend(args *PutAppendArgs, reply *PutAppendReply) {
 	// Your code here.
 }
 
-// the tester calls Kill() when a ShardKV instance won't
+// Kill the tester calls Kill() when a ShardKV instance won't
 // be needed again. you are not required to do anything
 // in Kill(), but it might be convenient to (for example)
 // turn off debug output from this instance.
@@ -41,7 +41,7 @@ func (kv *ShardKV) Kill() {
 	// Your code here, if desired.
 }
 
-// servers[] contains the ports of the servers in this group.
+// StartServer servers[] contains the ports of the servers in this group.
 //
 // me is the index of the current server in servers[].
 //

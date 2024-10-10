@@ -49,7 +49,7 @@ var KvModel = porcupine.Model{
 			return true, inp.Value
 		} else {
 			// append
-			return true, (st + inp.Value)
+			return true, st + inp.Value
 		}
 	},
 	DescribeOperation: func(input, output interface{}) string {

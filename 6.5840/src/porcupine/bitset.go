@@ -28,13 +28,13 @@ func bitsetIndex(pos uint) (uint, uint) {
 
 func (b bitset) set(pos uint) bitset {
 	major, minor := bitsetIndex(pos)
-	b[major] |= (1 << minor)
+	b[major] |= 1 << minor
 	return b
 }
 
 func (b bitset) clear(pos uint) bitset {
 	major, minor := bitsetIndex(pos)
-	b[major] &^= (1 << minor)
+	b[major] &^= 1 << minor
 	return b
 }
 
