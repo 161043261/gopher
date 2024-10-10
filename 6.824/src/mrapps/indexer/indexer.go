@@ -1,4 +1,4 @@
-package main
+package indexer
 
 //
 // an indexing application "plugin" for MapReduce.
@@ -7,7 +7,7 @@ package main
 //
 
 import "fmt"
-import "../mr"
+import "bronya.com/6.824/src/mr"
 
 import "strings"
 import "unicode"

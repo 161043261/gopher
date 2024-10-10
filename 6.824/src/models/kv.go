@@ -1,6 +1,6 @@
 package models
 
-import "../porcupine"
+import "bronya.com/6.824/src/porcupine"
 import "fmt"
 import "sort"
 
