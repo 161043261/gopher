@@ -8,7 +8,7 @@
 - Kafka
 - 网络协议 TCP, UDP, HTTP, ...
 - 网络安全 SSH, TLS, ...
-- 分布式算法
+- 分布式算法 Raft
 - [Docker](./docker/)
 - gRPC
 - protobuf
@@ -59,11 +59,8 @@
 - cpp IO
 - cpp 命令 gcc, clang, gdb, ...
 - cmake（略）
-- mit6.s081
-- cmu 15445
-- mit 6.824
 
-## 前端
+## typescript
 
 - html5（略）
 - typescript
@@ -71,3 +68,7 @@
   - [ts-vue](./ts-vue/)
   - [ts-vue3](./ts-vue3/)
   - [ts-proj](./ts-proj/)
+
+## python
+- python 基础
+- pytest
