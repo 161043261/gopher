@@ -1,8 +1,8 @@
 # NIO
 
-### Non-blocking IO 非阻塞 IO
+## Non-blocking IO 非阻塞 IO
 
-> channel 数据读写的双向通道
+### channel 数据读写的双向通道
 
 - stream 数据读写的单向通道
 - channel 数据读写的双向通道
@@ -14,14 +14,14 @@
 - java.nio.channels.SocketChannel
 - java.nio.channels.ServerSocketChannel
 
-> buffer 数据缓冲区
+### buffer 数据缓冲区
 
 常见的 buffer
 
 - java.nio.ByteBuffer
-    - java.nio.MappedByteBuffer
-    - java.nio.DirectByteBuffer（堆外内存）
-    - java.nio.HeapByteBuffer（jvm 堆内存）
+  - java.nio.MappedByteBuffer
+  - java.nio.DirectByteBuffer（堆外内存）
+  - java.nio.HeapByteBuffer（jvm 堆内存）
 - java.nio.ShortBuffer
 - java.nio.IntBuffer
 - java.nio.LongBuffer
@@ -31,7 +31,15 @@
 
 **Selector 服务器**：一个线程处理一个 socket 连接
 
-### ByteBuffer
+## ByteBuffer
+
+```java
+public abstract sealed class ByteBuffer
+    extends Buffer
+    implements Comparable<ByteBuffer>
+    permits
+    HeapByteBuffer, MappedByteBuffer
+```
 
 ByteBuffer 属性
 
@@ -39,6 +47,45 @@ ByteBuffer 属性
 - position 读/写指针
 - limit 读/写限制 (position <= limit)
 
+# 事件
+
 - 读前 flip: 写模式 -> 读模式
-- 写前 clear: 丢弃脏数据
-- 写前 compact: 不丢弃脏数据
+- 写前 clear: 清空脏数据
+- 写前 compact: 紧凑数据，不清空数据
+
+### ByteBuffer 常见方法
+
+```java
+// 分配 jvm 堆内存，不能动态扩容
+public static ByteBuffer allocate(int capacity);
+
+// 分配堆外内存，不能动态扩容
+public static ByteBuffer allocateDirect(int capacity);
+```
+
+向 buffer 写入数据
+
+- 调用 channel 的 read 方法：从 channel 中读，向 buffer 中写
+- 调用 buffer 的 put 方法
+
+```java
+// 调用 channel 的 read 方法，从 channel 中读，向 buffer 中写
+int nBytes = channel.read(buf);
+// 调用 buffer 的 put 方法
+buf.put((byte) 1 << 7 - 1)
+```
+
+从 buffer 读出数据
+
+- 调用 channel 的 write 方法：从 buffer 中读，向 channel 中写
+- 调用 buffer 的 get 方法：get 方法不会删除 buffer 中的数据
+
+其他方法
+
+- get(3): 读出 buffer 中索引为 3 的元素
+- rewind() 重置 position 指针为 0
+- mark(3) 标记索引为 3 的元素
+- reset() 重置 position 指针为 3
+
+**Buffer 是线程不安全的**
+
