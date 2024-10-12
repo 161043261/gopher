@@ -40,8 +40,8 @@ public class ByteBufferTest {
         // compact -> []byte{1, 6, 1, 4, 3, 2, 6, 1, 0, 0}
 
         buffer.clear();
-        int byteCnt = channel.read(buffer); // 从 channel 中读，向 buffer 中写
-        if (byteCnt == -1) {
+        int nBytes = channel.read(buffer); // 从 channel 中读，向 buffer 中写
+        if (nBytes == -1) {
           break;
         }
         // >>> 写结束
@@ -54,7 +54,7 @@ public class ByteBufferTest {
         }
         // >>> 读结束
 
-        System.out.println(", byteCnt: " + byteCnt);
+        System.out.println(", nBytes: " + nBytes);
       }
     } catch (IOException e) {
       log.error(e.getMessage());
@@ -116,8 +116,58 @@ public class ByteBufferTest {
     try {
       scatteringRead.join();
       gatheringRead.join();
-    }catch (InterruptedException e) {
-
+    } catch (InterruptedException e) {
+      log.error(e.getMessage());
     }
+  }
+
+  // 原数据
+  // Hello world!\n
+  // I'm Duke.\n
+  // How are you?\n
+
+  // 粘包、半包后
+  // Hello world!\nI'm Duke.\nHo -- 粘包
+  // w are you?\n                -- 半包
+  @Test
+  void testPacket() {
+
+    @FunctionalInterface
+    interface Split {
+      void call(ByteBuffer srcBuf);
+    }
+
+    Split split =
+        srcBuf -> {
+          // 读前 flip
+          srcBuf.flip();
+
+          assertEquals(srcBuf.position() /* 读写指针 */, 0);
+          assertEquals(srcBuf.limit() /* 读写限制 */, srcBuf.remaining());
+          assertEquals(srcBuf.capacity() /* 容量 */, 32);
+
+          var len = srcBuf.limit(); // cap = srcBuf.capacity();
+          for (int i = 0; i < len; i++) {
+            if (srcBuf.get(i) == '\n') { // position 读写指针未移动
+              System.out.printf("Line break is at the No.%d element\n", i);
+              var dstBuf = ByteBuffer.allocate(i + 1 - srcBuf.position());
+              srcBuf.limit(i + 1);
+              dstBuf.put(srcBuf);
+              // 读前 flip
+              dstBuf.flip();
+              System.out.println(StandardCharsets.UTF_8.decode(dstBuf).toString());
+              srcBuf.limit(len);
+            }
+          }
+          srcBuf.compact();
+        };
+
+    var srcBuf = ByteBuffer.allocate(32);
+    //                      12         22
+    srcBuf.put("Hello world!\nI'm Duke.\nHo".getBytes());
+    split.call(srcBuf);
+    //                    12
+    srcBuf.put("w are you?\n".getBytes());
+    split.call(srcBuf);
   }
 }

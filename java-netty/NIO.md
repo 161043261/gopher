@@ -6,6 +6,7 @@
 
 - stream 数据读写的单向通道
 - channel 数据读写的双向通道
+- channel 是更底层的数据结构
 
 常见的 channel
 
@@ -29,12 +30,12 @@
 - java.nio.DoubleBuffer
 - java.nio.CharBuffer
 
-**Selector 服务器**：一个线程处理一个 socket 连接
+Selector 服务器：一个线程处理一个 socket 连接
 
 ## ByteBuffer
 
 ```java
-public abstract sealed class ByteBuffer
+public abstract sealed class ByteBuffer // 密封类
     extends Buffer
     implements Comparable<ByteBuffer>
     permits
@@ -47,7 +48,7 @@ ByteBuffer 属性
 - position 读/写指针
 - limit 读/写限制 (position <= limit)
 
-# 事件
+### 使用
 
 - 读前 flip: 写模式 -> 读模式
 - 写前 clear: 清空脏数据
@@ -83,9 +84,20 @@ buf.put((byte) 1 << 7 - 1)
 其他方法
 
 - get(3): 读出 buffer 中索引为 3 的元素
-- rewind() 重置 position 指针为 0
+- rewind() 重置 position 读写指针为 0
 - mark(3) 标记索引为 3 的元素
-- reset() 重置 position 指针为 3
+- reset() 重置 position 读写指针为 3
 
-**Buffer 是线程不安全的**
+> Buffer 是线程不安全的
 
+## 文件编程
+
+### FileChannel
+
+> FileChannel 只能工作在阻塞模式下
+
+调用 FileInputStream, FileOutputStream, 或 RandomAccessFile 以获取 FileChannel
+
+- 通过 FileInputStream 获取的 channel 只读
+- 通过 FileOutputStream 获取的 channel 只写
+- RandomAccessFile 可以指定读写模式
