@@ -101,3 +101,16 @@ buf.put((byte) 1 << 7 - 1)
 - 通过 FileInputStream 获取的 channel 只读
 - 通过 FileOutputStream 获取的 channel 只写
 - RandomAccessFile 可以指定读写模式
+
+```java
+// 读文件
+int nBytes = channel.read(buf);
+// 写文件
+int nBytes = channel.write(buf);
+// 获取当前读写的文件流的位置
+long pos = channel.position();
+// 设置当前读写的文件流的位置
+channel.position(new Random().nextLong(channel.size())/* newPos */);
+// 获取文件流的大小
+long size = channel.size();
+```

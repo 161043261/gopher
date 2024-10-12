@@ -8,7 +8,7 @@
 - Kafka
 - 网络协议 TCP, UDP, HTTP, ...
 - 网络安全 SSH, TLS, ...
-- 分布式算法 Raft
+- 分布式 map-reduce, Raft
 - [Docker](./docker/)
 - gRPC
 - protobuf
@@ -25,11 +25,12 @@
 - java 函数式编程
   - [java-func](./java-func/)
 - java 命令 java, javac, mvn, ...
-- mybatis, springboot
+- springboot
   - [java-proj](./java-proj/)
 - kafka
   - [java-kafka](./java-kafka/)
 - netty
+  - [java-netty](./java-netty/)
 
 ## go
 
@@ -45,7 +46,8 @@
 - gc
 - 设计模式
   - [go-design-pattern](./go-design-pattern/)
-- gorm, gin
+- gorm
+- gin
   - [go-proj](./go-proj/)
 
 ## cpp
@@ -70,5 +72,6 @@
   - [ts-proj](./ts-proj/)
 
 ## python
+
 - python 基础
 - pytest
