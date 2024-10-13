@@ -50,9 +50,11 @@ ByteBuffer 属性
 
 ### 使用
 
-- 读前 flip: 写模式 -> 读模式
-- 写前 clear: 清空脏数据
-- 写前 compact: 紧凑数据，不清空数据
+- 读 buf 前调用 flip 方法：写模式 -> 读模式
+  - position 写指针 -> 读指针
+  - limit 写限制 -> 读限制
+- 写 buf 前调用 clear 方法：清空脏数据
+- 写 buf 前调用 compact 方法：紧凑数据，不清空数据
 
 ### ByteBuffer 常见方法
 
@@ -162,3 +164,13 @@ Path target = Paths.get("src/main/go");
 // 如果目录非空，则抛出 DirectoryNotEmptyException 异常
 Files.delete(target);
 ```
+
+## 1.4 网络编程
+
+阻塞 IO
+
+- ServerSocketChannel::accept
+  没有新的连接时，线程阻塞，放弃 cpu
+- SocketChannel::read
+  没有新的数据时，线程阻塞，放弃 cpu
+- 对于 64 位 jvm，1 个线程 1 MB，线程过多会导致 OOM

@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.*;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -55,8 +59,7 @@ public class PathTest {
         log.info(newLine);
       }
       int exitCode = process.waitFor();
-      assert exitCode == 0; // java 断言
-      Assertions.assertEquals(exitCode, 0); // junit 断言
+      Assertions.assertEquals(0 /* expected */, exitCode /* actual */); // junit 断言
     } catch (IOException | InterruptedException e) {
       log.error(e.getMessage());
     }
@@ -83,7 +86,8 @@ public class PathTest {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
                 throws IOException {
-              // System.out.println(Thread.currentThread().getName() + " -- Enter dir: " + dir);
+              // System.out.println(Thread.currentThread().getName() + " -- Enter dir: " +
+              // dir);
               dirCnt.incrementAndGet();
               cnt[0] += 1;
               return super.preVisitDirectory(dir, attrs);
@@ -92,7 +96,8 @@ public class PathTest {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                 throws IOException {
-              // System.out.println(Thread.currentThread().getName() + " -- Visit file: " + file);
+              // System.out.println(Thread.currentThread().getName() + " -- Visit file: " +
+              // file);
               fileCnt.incrementAndGet();
               cnt[1] += 1;
               if (file.toFile().getName().endsWith(".jar")) {
@@ -116,6 +121,7 @@ public class PathTest {
       Assertions.assertEquals(cnt[0], dirCnt.get());
       Assertions.assertEquals(cnt[1], fileCnt.get());
       Assertions.assertEquals(cnt[2], jarCnt.get());
+
       System.out.println("[dirCnt, fileCnt, jarCnt] = " + Arrays.toString(cnt));
 
     } catch (IOException e) {
@@ -129,7 +135,7 @@ public class PathTest {
     try {
       Process process = processBuilder.start();
       int exitCode = process.waitFor();
-      Assertions.assertEquals(exitCode, 0);
+      Assertions.assertEquals(0 /* expected */, exitCode /* actual */);
       Assertions.assertFalse(Paths.get("./target/src").toFile().exists());
     } catch (IOException | InterruptedException e) {
       log.error(e.getMessage());
@@ -154,15 +160,15 @@ public class PathTest {
 
       pathStream.forEach(
           srcName -> {
-            // System.out.println(srcName); // relative
+            // System.out.println(srcName); // 相对路径
             String cpName =
                 String.format(
                     ".%starget%s%s",
                     File.separator, File.separator, srcName.toString().substring(2));
-            // System.out.println(cpName); // relative
+            // System.out.println(cpName); // 相对路径
 
             try {
-              Path cpPath = Paths.get(cpName); // relative
+              Path cpPath = Paths.get(cpName); // 相对路径
               // System.out.println(cpPath.toString());
               if (Files.isDirectory(srcName)) {
                 Files.createDirectories(cpPath);

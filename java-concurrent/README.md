@@ -147,16 +147,14 @@ public enum State {
 ## 线程中断
 
 ```java
-class Thread {
-  // 中断调用者线程（将调用者线程的中断标志设置为 true）
-  // 例 t1.interrupt(); 将 t1 的中断标志设置为 true
-  public void interrupt();
-  // 当前线程的中断标志是否为 true
-  public static boolean isInterrupted();
-  // 获取当前线程的中断标志，并重置为 false
-  public static boolean interrupted() {
-    return currentThread().getAndClearInterrupt();
-  }
+// 将调用者线程的中断标志设置为 true
+// 例 t1.interrupt(); 将 t1 的中断标志设置为 true
+public void interrupt();
+// 当前线程的中断标志是否为 true
+public static boolean isInterrupted();
+// 获取当前线程的中断标志，并重置为 false
+public static boolean interrupted() {
+  return currentThread().getAndClearInterrupt();
 }
 ```
 

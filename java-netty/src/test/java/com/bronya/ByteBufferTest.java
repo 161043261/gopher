@@ -20,9 +20,9 @@ public class ByteBufferTest {
     Assertions.assertTrue(true);
   }
 
-  // 读前 flip: 写模式 -> 读模式
-  // 写前 clear: 清空脏数据
-  // 写前 compact: 紧凑数据，不清空数据
+  // 读 buf 前调用 flip 方法：写模式 -> 读模式
+  // 写 buf 前调用 clear 方法：清空脏数据
+  // 写 buf 前调用 compact：紧凑数据，不清空数据
   @Test
   public void testByteBuffer() {
     try (var fileInputStream = new FileInputStream("data.txt");
@@ -31,7 +31,7 @@ public class ByteBufferTest {
       // 为 buffer 分配 10 个字节
       var buffer = ByteBuffer.allocate(10);
       while (true) {
-        // ! <<< 写开始，写前 clear: 清空脏数据
+        // ! <<< 写开始，写 buf 前调用 clear 方法：清空脏数据
 
         // []byte{1, 6, 1, 0, 4, 3, 2, 0, 6, 1}
         // clear -> []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -44,7 +44,7 @@ public class ByteBufferTest {
         }
         // >>> 写结束
 
-        // ! <<< 读开始，读前 flip: 写模式 -> 读模式
+        // ! <<< 读开始，读 buf 前调用 flip 方法: 写模式 -> 读模式
         buffer.flip();
         while (buffer.hasRemaining()) {
           byte b = buffer.get(); // 从 buffer 中读一个字符
@@ -80,7 +80,7 @@ public class ByteBufferTest {
                 var buf3 = ByteBuffer.allocate(5); // three
                 var nBytes = channel.read(new ByteBuffer[] {buf1, buf2, buf3});
                 Assertions.assertEquals(11, nBytes);
-                // 读前 flip
+                // 读 buf 前调用 flip 方法
                 buf1.flip();
                 buf2.flip();
                 buf3.flip();
@@ -104,7 +104,7 @@ public class ByteBufferTest {
                           StandardCharsets.UTF_8.encode("four"),
                           StandardCharsets.UTF_8.encode("five")
                         });
-                Assertions.assertEquals(nBytes, 8);
+                Assertions.assertEquals(8 /* expected */, nBytes /* actual */);
               } catch (IOException e) {
                 log.error(e.getMessage());
               }
@@ -126,7 +126,7 @@ public class ByteBufferTest {
 
   // 粘包、半包后
   // Hello world!\nI'm Duke.\nHo -- 粘包
-  // w are you?\n                -- 半包
+  // w are you?\n -- 半包
   @Test
   void testPacket() {
 
@@ -137,12 +137,11 @@ public class ByteBufferTest {
 
     Split split =
         srcBuf -> {
-          // 读前 flip
+          // 读 buf 前调用 flip 方法
           srcBuf.flip();
 
-          Assertions.assertEquals(srcBuf.position() /* 读写指针 */, 0);
-          Assertions.assertEquals(srcBuf.limit() /* 读写限制 */, srcBuf.remaining());
-          Assertions.assertEquals(srcBuf.capacity() /* 容量 */, 32);
+          Assertions.assertEquals(0, srcBuf.position() /* 读写指针 */);
+          Assertions.assertEquals(32, srcBuf.capacity() /* 容量 */);
 
           var len = srcBuf.limit(); // cap = srcBuf.capacity();
           for (int i = 0; i < len; i++) {
@@ -151,7 +150,7 @@ public class ByteBufferTest {
               var dstBuf = ByteBuffer.allocate(i + 1 - srcBuf.position());
               srcBuf.limit(i + 1);
               dstBuf.put(srcBuf);
-              // 读前 flip
+              // 读 buf 前调用 flip 方法
               dstBuf.flip();
               System.out.println(StandardCharsets.UTF_8.decode(dstBuf).toString());
               srcBuf.limit(len);
@@ -161,10 +160,10 @@ public class ByteBufferTest {
         };
 
     var srcBuf = ByteBuffer.allocate(32);
-    //                      12         22
+    // 12 22
     srcBuf.put("Hello world!\nI'm Duke.\nHo".getBytes());
     split.call(srcBuf);
-    //                    12
+    // 12
     srcBuf.put("w are you?\n".getBytes());
     split.call(srcBuf);
   }
