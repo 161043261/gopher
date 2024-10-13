@@ -32,7 +32,7 @@
 
 Selector 服务器：一个线程处理一个 socket 连接
 
-## ByteBuffer
+## 1.1 ByteBuffer
 
 ```java
 public abstract sealed class ByteBuffer // 密封类
@@ -90,7 +90,7 @@ buf.put((byte) 1 << 7 - 1)
 
 > Buffer 是线程不安全的
 
-## 文件编程
+## 1.2 文件编程
 
 ### FileChannel
 
@@ -113,4 +113,52 @@ long pos = channel.position();
 channel.position(new Random().nextLong(channel.size())/* newPos */);
 // 获取文件流的大小
 long size = channel.size();
+```
+
+## 1.3 Path 和 Paths
+
+- Path 文件路径
+- Paths 工具类，用于获取 Path 实例
+
+```java
+// src/main/go
+// src/main/java
+// /home/user/data.txt
+// /homee/user/to.txt
+Path path = Paths.get("README.md"); // 使用相对 pom.xml 的相对路径
+Path path = Paths.get("/home/user/data.txt"); // 使用绝对路径
+Path path = Paths.get("/home/user"/* 目录 */, "data.txt"/* 文件 */);
+```
+
+```java
+Path path = Paths.get("/home/user/../user/data.txt");
+// 正常化路径
+System.out.println(path.normalize()); // /home/user/data.txt
+
+// 文件是否存在
+System.out.println(Files.exists("src/main"));
+
+Path newDir = Paths.get("src/main/go");
+// 创建目录
+Files.createDirectory(newDir);
+
+Path src = Paths.get("/home/user/data.txt");
+Path dst = Paths.get("/home/user/to.txt");
+// 拷贝文件
+// 如果文件已存在，则抛出 FileAlreadyExistsException 异常
+Files.copy(src, dst);
+
+// 移动文件
+// StandardCopyOption.ATOMIC_MOVE 保证文件移动的原子性
+Files.move(src, dst, StandardCopyOption.ATOMIC_MOVE);
+
+Path target = Paths.get("/home/user/to.txt");
+// 删除文件
+// 如果文件不存在，则抛出 NoSuchFileException 异常
+Files.delete(target);
+
+Path target = Paths.get("src/main/go");
+// 删除目录
+// 如果目录非空，则抛出 DirectoryNotEmptyException 异常
+Files.delete(target);
 ```

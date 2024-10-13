@@ -7,7 +7,7 @@ import java.nio.channels.FileChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-@Slf4j
+@Slf4j(topic = "FileTest")
 public class FileTest {
 
   @Test
@@ -32,6 +32,6 @@ public class FileTest {
       log.error(e.getMessage());
     }
     long end = System.nanoTime();
-    log.info("Transfer to: {}", (end - start) / 1000_000.);
+    log.info("Transfer to: {}ms", (end - start) / 1000_000.);
   }
 }

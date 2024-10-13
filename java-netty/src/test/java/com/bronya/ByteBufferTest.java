@@ -1,8 +1,5 @@
 package com.bronya;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -12,6 +9,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 @Slf4j(topic = "ByteBufferTest")
@@ -19,7 +17,7 @@ public class ByteBufferTest {
 
   @Test
   public void testAssertTrue() {
-    assertTrue(true);
+    Assertions.assertTrue(true);
   }
 
   // 读前 flip: 写模式 -> 读模式
@@ -81,7 +79,7 @@ public class ByteBufferTest {
                 var buf2 = ByteBuffer.allocate(3); // two
                 var buf3 = ByteBuffer.allocate(5); // three
                 var nBytes = channel.read(new ByteBuffer[] {buf1, buf2, buf3});
-                assertEquals(11, nBytes);
+                Assertions.assertEquals(11, nBytes);
                 // 读前 flip
                 buf1.flip();
                 buf2.flip();
@@ -106,7 +104,7 @@ public class ByteBufferTest {
                           StandardCharsets.UTF_8.encode("four"),
                           StandardCharsets.UTF_8.encode("five")
                         });
-                assertEquals(nBytes, 8);
+                Assertions.assertEquals(nBytes, 8);
               } catch (IOException e) {
                 log.error(e.getMessage());
               }
@@ -142,9 +140,9 @@ public class ByteBufferTest {
           // 读前 flip
           srcBuf.flip();
 
-          assertEquals(srcBuf.position() /* 读写指针 */, 0);
-          assertEquals(srcBuf.limit() /* 读写限制 */, srcBuf.remaining());
-          assertEquals(srcBuf.capacity() /* 容量 */, 32);
+          Assertions.assertEquals(srcBuf.position() /* 读写指针 */, 0);
+          Assertions.assertEquals(srcBuf.limit() /* 读写限制 */, srcBuf.remaining());
+          Assertions.assertEquals(srcBuf.capacity() /* 容量 */, 32);
 
           var len = srcBuf.limit(); // cap = srcBuf.capacity();
           for (int i = 0; i < len; i++) {
