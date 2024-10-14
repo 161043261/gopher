@@ -8,11 +8,9 @@ import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-@Slf4j(topic = "ByteBufferTest")
 public class ByteBufferTest {
 
   @Test
@@ -55,7 +53,7 @@ public class ByteBufferTest {
         System.out.println(", nBytes: " + nBytes);
       }
     } catch (IOException e) {
-      log.error(e.getMessage());
+      System.err.println(e.getMessage());
     }
   }
 
@@ -84,11 +82,11 @@ public class ByteBufferTest {
                 buf1.flip();
                 buf2.flip();
                 buf3.flip();
-                log.info(StandardCharsets.UTF_8.decode(buf1).toString());
-                log.info(StandardCharsets.UTF_8.decode(buf2).toString());
-                log.info(StandardCharsets.UTF_8.decode(buf3).toString());
+                System.out.println(StandardCharsets.UTF_8.decode(buf1).toString());
+                System.out.println(StandardCharsets.UTF_8.decode(buf2).toString());
+                System.out.println(StandardCharsets.UTF_8.decode(buf3).toString());
               } catch (IOException e) {
-                log.error(e.getMessage());
+                System.err.println(e.getMessage());
               }
             });
 
@@ -106,7 +104,7 @@ public class ByteBufferTest {
                         });
                 Assertions.assertEquals(8 /* expected */, nBytes /* actual */);
               } catch (IOException e) {
-                log.error(e.getMessage());
+                System.err.println(e.getMessage());
               }
             });
     scatteringRead.start();
@@ -115,7 +113,7 @@ public class ByteBufferTest {
       scatteringRead.join();
       gatheringRead.join();
     } catch (InterruptedException e) {
-      log.error(e.getMessage());
+      System.err.println(e.getMessage());
     }
   }
 

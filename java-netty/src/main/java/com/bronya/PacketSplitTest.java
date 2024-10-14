@@ -15,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 // 按行分隔符 \n 拆分 TCP 数据包
-public class PacketTest {
+public class PacketSplitTest {
   private static void split(ByteBuffer buf) {
     // 读 buf 前调用 flip 方法
     buf.flip();
@@ -53,6 +53,7 @@ public class PacketTest {
                   if (nKeys == 0) {
                     continue;
                   }
+                  assert nKeys > 0;
                   Iterator<SelectionKey> iter = selector.selectedKeys().iterator();
                   while (iter.hasNext()) {
                     SelectionKey key = iter.next();
@@ -109,7 +110,7 @@ public class PacketTest {
                 SocketAddress remoteAddr = socket.getRemoteAddress();
                 System.out.println("[client] Local address: " + localAddr);
                 System.out.println("[client] Remote address: " + remoteAddr);
-                socket.write(StandardCharsets.UTF_8.encode("0123\n456789\nabcdef"));
+                socket.write(StandardCharsets.UTF_8.encode("01234\n56789\nabcdef"));
                 socket.write(Charset.defaultCharset().encode("0123456789abcdef\n"));
                 while (!Thread.currentThread().isInterrupted())
                   ;
@@ -127,8 +128,8 @@ public class PacketTest {
     client.start();
 
     try {
-      boolean zeroCnt = waitGroup.await(10, TimeUnit.SECONDS);
-      assert !zeroCnt : "Unexpect zeroCnt";
+      boolean expectZero = waitGroup.await(10, TimeUnit.SECONDS);
+      assert !expectZero : "Unexpect count";
       server.interrupt();
       client.interrupt();
       System.out.println("[main] Server is interrupted: " + server.isInterrupted());

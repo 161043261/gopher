@@ -167,6 +167,15 @@ Files.delete(target);
 
 ## 1.4 网络编程
 
+```java
+// 将调用者线程的中断标志设置为 true
+Thread.currentThread().interrupt();
+// 获取当前线程的中断标志（是否为 true）
+Thread.currentThread().isInterrupted();
+// 获取当前线程的中断标志，并重置为 false
+Thread.interrupted();
+```
+
 **阻塞 IO 与非阻塞 IO**
 
 - ServerSocketChannel::accept
@@ -180,3 +189,5 @@ Files.delete(target);
 - TCP 可靠，面向字节流，TCP 消息没有边界
   - 按行分隔符 \n 拆分 TCP 数据包
 - UDP 不可靠，面向用户数据报，UDP 消息有边界
+
+事件触发后，要么处理，要么取消 cancel。否则该事件将持续触发：NIO 基于 epoll 的水平触发 Level Trigger

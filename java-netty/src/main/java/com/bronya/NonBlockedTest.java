@@ -80,8 +80,8 @@ public class NonBlockedTest {
 
     try {
       // waitGroup.await(); // 等待 server, client 线程执行结束...
-      boolean zeroCnt = waitGroup.await(5, TimeUnit.SECONDS); // 等待 5s
-      assert !zeroCnt : "Unexpect zeroCnt";
+      boolean expectZero = waitGroup.await(5, TimeUnit.SECONDS); // 等待 5s
+      assert !expectZero : "Unexpect count";
       server.interrupt();
       client.interrupt();
       System.out.println("[main] Server is interrupted: " + server.isInterrupted());

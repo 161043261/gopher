@@ -13,12 +13,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-@Slf4j(topic = "PathTest")
 public class PathTest {
 
   static final String JAVA_HOME =
@@ -41,7 +39,7 @@ public class PathTest {
       };
 
   static {
-    log.info("$JAVA_HOME: {}", JAVA_HOME);
+    System.out.println("$JAVA_HOME: " + JAVA_HOME);
   }
 
   @Test
@@ -56,12 +54,12 @@ public class PathTest {
       var bufferedReader = new BufferedReader(streamReader);
       String newLine;
       while ((newLine = bufferedReader.readLine()) != null) {
-        log.info(newLine);
+        System.out.println(newLine);
       }
       int exitCode = process.waitFor();
       Assertions.assertEquals(0 /* expected */, exitCode /* actual */); // junit 断言
     } catch (IOException | InterruptedException e) {
-      log.error(e.getMessage());
+      System.err.println(e.getMessage());
     }
   }
 
@@ -125,7 +123,7 @@ public class PathTest {
       System.out.println("[dirCnt, fileCnt, jarCnt] = " + Arrays.toString(cnt));
 
     } catch (IOException e) {
-      log.error(e.getMessage());
+      System.err.println(e.getMessage());
     }
   }
 
@@ -138,7 +136,7 @@ public class PathTest {
       Assertions.assertEquals(0 /* expected */, exitCode /* actual */);
       Assertions.assertFalse(Paths.get("./target/src").toFile().exists());
     } catch (IOException | InterruptedException e) {
-      log.error(e.getMessage());
+      System.err.println(e.getMessage());
     }
   }
 
@@ -147,7 +145,7 @@ public class PathTest {
     try {
       Runtime.getRuntime().exec("/path/to/mvn clean"); // 使用 mvn 的绝对路径
     } catch (IOException e) {
-      log.error(e.getMessage());
+      System.err.println(e.getMessage());
     }
   }
 
@@ -176,11 +174,11 @@ public class PathTest {
                 Files.copy(srcName, cpPath);
               }
             } catch (IOException e) {
-              log.error(e.getMessage());
+              System.err.println(e.getMessage());
             }
           });
     } catch (IOException e) {
-      log.error(e.getMessage());
+      System.err.println(e.getMessage());
     }
     long end = System.currentTimeMillis();
     System.out.println("Total: " + (end - start) + "ms");
@@ -190,7 +188,7 @@ public class PathTest {
         .addShutdownHook(
             new Thread(
                 () -> {
-                  log.info("Graceful exit");
+                  System.out.println("Graceful exit");
                 }));
 
     try {

@@ -4,10 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-@Slf4j(topic = "FileTest")
 public class FileTest {
 
   @Test
@@ -25,13 +23,13 @@ public class FileTest {
       long size = fromChan.size();
       for (long left = size; left > 0; ) {
         var position = size - left;
-        log.info("size: {}, position: {}, left: {}", size, position, left);
+        System.out.println("size: " + size + ", position: " + position + ", left: " + left);
         left -= fromChan.transferTo(position, left, toChan);
       }
     } catch (IOException e) {
-      log.error(e.getMessage());
+      System.err.println(e.getMessage());
     }
     long end = System.nanoTime();
-    log.info("Transfer to: {}ms", (end - start) / 1000_000.);
+    System.out.println("Transfer to: " + (end - start) / 1000_000. + "ms");
   }
 }
