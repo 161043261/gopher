@@ -186,7 +186,7 @@
             </execution>
           </executions>
           <configuration>
-            <mainClass>com.bronya.PacketSplitTest</mainClass>
+            <mainClass>com.bronya.MultiThreadTest</mainClass>
           </configuration>
         </plugin>
       </plugins>

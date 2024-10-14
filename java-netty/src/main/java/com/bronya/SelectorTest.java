@@ -55,9 +55,9 @@ public class SelectorTest {
                   System.out.println("[server] Number of selected keys: " + nKeys);
 
                   // selector.selectedKeys();
-                  // 返回被选择的键的集合 selectedKeys
-                  Set<SelectionKey> selectedKeys = selector.selectedKeys();
-                  Iterator<SelectionKey> iter = selectedKeys.iterator();
+                  // 返回被选择的键的集合 selectionKeys
+                  Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                  Iterator<SelectionKey> iter = selectionKeys.iterator();
 
                   while (iter.hasNext()) {
                     SelectionKey key = iter.next();
@@ -117,7 +117,7 @@ public class SelectorTest {
                       if (nBytes == -1) {
                         // cancel 方法
                         // 1. 从 selector 中取消注册该 key 对应的 channel
-                        // 2. 从被选择的键的集合 selectedKeys 中移除该 key
+                        // 2. 从被选择的键的集合 selectionKeys 中移除该 key
                         key.cancel(); // 取消事件
                         socket_.close();
                       } else {
@@ -129,7 +129,7 @@ public class SelectorTest {
                       }
                     }
                     // 事件处理结束
-                    // 必须从被选择的键的集合 selectedKeys 中移除该事件的键
+                    // 必须从被选择的键的集合 selectionKeys 中移除该事件的键
                     iter.remove();
                     System.out.println("[server] Remove a key, correspond to a channel");
                   }
