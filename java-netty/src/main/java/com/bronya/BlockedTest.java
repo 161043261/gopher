@@ -35,7 +35,7 @@ public class BlockedTest {
                 }
               } catch (IOException e) {
                 System.out.println(
-                    "[Server] Is interrupted: " + Thread.currentThread().isInterrupted());
+                    "[server] Is interrupted: " + Thread.currentThread().isInterrupted());
               }
             });
 
@@ -48,7 +48,7 @@ public class BlockedTest {
               } catch (IOException | InterruptedException ignored) {
                 // 3s 后 client 线程执行结束，不会被 interrupt
               } finally {
-                System.out.println("[Client] Is alive: " + Thread.currentThread().isAlive());
+                System.out.println("[client] Is alive: " + Thread.currentThread().isAlive());
               }
             });
 

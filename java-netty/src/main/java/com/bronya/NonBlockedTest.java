@@ -48,13 +48,13 @@ public class NonBlockedTest {
                 }
               } catch (IOException | InterruptedException e) {
                 System.out.println(
-                    "[Server-stage1] Is interrupted: " + Thread.currentThread().isInterrupted());
-                Thread.currentThread().interrupt();
+                    "[server] Stage1 -- is interrupted: " + Thread.currentThread().isInterrupted());
+                // Thread.currentThread().interrupt();
               } finally {
                 waitGroup.countDown();
                 System.out.println(
-                    "[Server-stage2] Is interrupted: " + Thread.currentThread().isInterrupted());
-                System.out.println("[Server] Waiting for: " + waitGroup.getCount() + " threads");
+                    "[server] Stage2 -- is interrupted: " + Thread.currentThread().isInterrupted());
+                System.out.println("[server] Waiting for: " + waitGroup.getCount() + " threads");
               }
             });
 
@@ -70,8 +70,8 @@ public class NonBlockedTest {
               } finally {
                 waitGroup.countDown();
                 System.out.println(
-                    "[Client] Is interrupted: " + Thread.currentThread().isInterrupted());
-                System.out.println("[Client] Waiting for: " + waitGroup.getCount() + " threads");
+                    "[client] Is interrupted: " + Thread.currentThread().isInterrupted());
+                System.out.println("[client] Waiting for: " + waitGroup.getCount() + " threads");
               }
             });
 

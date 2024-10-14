@@ -191,7 +191,7 @@
             </execution>
           </executions>
           <configuration>
-            <mainClass>com.bronya.SelectorTest</mainClass>
+            <mainClass>com.bronya.LineBreak</mainClass>
           </configuration>
         </plugin>
       </plugins>

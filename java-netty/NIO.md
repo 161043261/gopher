@@ -167,10 +167,16 @@ Files.delete(target);
 
 ## 1.4 网络编程
 
-阻塞 IO
+**阻塞 IO 与非阻塞 IO**
 
 - ServerSocketChannel::accept
   没有新的连接时，线程阻塞，放弃 cpu
 - SocketChannel::read
   没有新的数据时，线程阻塞，放弃 cpu
 - 对于 64 位 jvm，1 个线程 1 MB，线程过多会导致 OOM
+
+**处理消息的边界**
+
+- TCP 可靠，面向字节流，TCP 消息没有边界
+  - 按行分隔符 \n 拆分 TCP 数据包
+- UDP 不可靠，面向用户数据报，UDP 消息有边界
