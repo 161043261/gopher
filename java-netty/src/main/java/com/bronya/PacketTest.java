@@ -1,5 +1,6 @@
 package com.bronya;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -14,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 // 按行分隔符 \n 拆分 TCP 数据包
-public class LineBreak {
+public class PacketTest {
   private static void split(ByteBuffer buf) {
     // 读 buf 前调用 flip 方法
     buf.flip();
@@ -88,9 +89,8 @@ public class LineBreak {
                     }
                   }
                 }
-              } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println(e.getMessage());
+              } catch (IOException e) {
+                System.err.println("[server] Error: " + e.getMessage());
               } finally {
                 waitGroup.countDown();
                 System.out.println(
@@ -113,8 +113,8 @@ public class LineBreak {
                 socket.write(Charset.defaultCharset().encode("0123456789abcdef\n"));
                 while (!Thread.currentThread().isInterrupted())
                   ;
-              } catch (Exception e) {
-                System.err.println(e.getMessage());
+              } catch (IOException | InterruptedException e) {
+                System.err.println("[client] Error: " + e.getMessage());
               } finally {
                 waitGroup.countDown();
                 System.out.println(
